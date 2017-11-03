@@ -5,14 +5,9 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
+import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
 @ApplicationScoped
@@ -33,26 +28,8 @@ public class DefaultUserService implements UserService {
     return em.find(User.class, id);
   }
 
+  @Transactional
   public void store(final User user) {
-    try {
-      transaction.begin();
-      em.persist(user);
-    } catch (NotSupportedException e) {
-      e.printStackTrace();
-    } catch (SystemException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        transaction.commit();
-      } catch (RollbackException e) {
-        e.printStackTrace();
-      } catch (HeuristicMixedException e) {
-        e.printStackTrace();
-      } catch (HeuristicRollbackException e) {
-        e.printStackTrace();
-      } catch (SystemException e) {
-        e.printStackTrace();
-      }
-    }
+    em.persist(user);
   }
 }
