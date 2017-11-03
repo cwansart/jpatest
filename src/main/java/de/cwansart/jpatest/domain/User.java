@@ -11,11 +11,11 @@ import javax.validation.constraints.Pattern;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(name = "name")
-  @Pattern(regexp = "[A-Za-z9-0]{3,}")
+  @Pattern(regexp = "[A-Za-z0-0]{3,}")
   private String name;
 
   public Long getId() {
