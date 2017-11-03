@@ -3,6 +3,8 @@ package de.cwansart.jpatest.application;
 import de.cwansart.jpatest.domain.User;
 import de.cwansart.jpatest.domain.UserService;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,13 +24,21 @@ public class UserResource {
 
   @GET
   public Response getAll() {
-    return Response.ok(service.getAll()).build();
+    List<User> users = service.getAll();
+    if (users.size() == 0) {
+      return Response.noContent().build();
+    }
+    return Response.ok(users).build();
   }
 
   @GET
   @Path("{id}")
   public Response getById(@PathParam("id") final Long id) {
-    return Response.ok(service.getById(id)).build();
+    User user = service.getById(id);
+    if (user == null) {
+      return Response.noContent().build();
+    }
+    return Response.ok(user).build();
   }
 
   @POST
